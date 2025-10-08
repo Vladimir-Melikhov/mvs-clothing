@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "apps.core",
     "apps.authentication",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -154,7 +155,6 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="noreply@mvsclothing.com")
 
-# API documentation
 SPECTACULAR_SETTINGS = {
     "TITLE": "mvs clothing API",
     "DESCRIPTION": "API documentation for Fashion Store e-commerce platform",
@@ -162,7 +162,6 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
 }
 
-# Security settings
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"

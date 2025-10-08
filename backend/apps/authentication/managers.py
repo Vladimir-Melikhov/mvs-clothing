@@ -10,14 +10,6 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         """
         Create and save a regular user with the given email and password.
-
-        Args:
-            email: User email address
-            password: User password
-            **extra_fields: Additional user fields
-
-        Returns:
-            User instance
         """
         if not email:
             raise ValueError(_("The Email field must be set"))
@@ -31,14 +23,6 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         """
         Create and save a superuser with the given email and password.
-
-        Args:
-            email: User email address
-            password: User password
-            **extra_fields: Additional user fields
-
-        Returns:
-            User instance
         """
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
@@ -55,11 +39,5 @@ class UserManager(BaseUserManager):
     def get_by_natural_key(self, email):
         """
         Get user by email (natural key).
-
-        Args:
-            email: User email address
-
-        Returns:
-            User instance
         """
         return self.get(**{f"{self.model.USERNAME_FIELD}__iexact": email})

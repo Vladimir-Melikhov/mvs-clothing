@@ -52,11 +52,6 @@ class SoftDeleteModel(models.Model):
     def delete(self, using=None, keep_parents=False, hard=False):
         """
         Soft delete the object by default. Use hard=True for permanent deletion.
-
-        Args:
-            using: Database alias to use
-            keep_parents: Keep parent objects
-            hard: If True, performs hard delete
         """
         if hard:
             super().delete(using=using, keep_parents=keep_parents)

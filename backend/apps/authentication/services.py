@@ -13,19 +13,17 @@ class AuthenticationService:
     Service class for handling authentication business logic.
     """
 
+
     @staticmethod
     def register_user(validated_data):
         """
         Register a new user and send verification email.
-
-        Args:
-            validated_data: Validated user data
-
-        Returns:
-            Tuple of (user, tokens)
         """
         with transaction.atomic():
-            user = User.objects.create_user(**validated_data)
+            data = validated_data.copy()
+            password = data.pop("password")
+            data.pop("password_confirm", None)
+            user = User.objects.create_user(password=password, **data)
             tokens = AuthenticationService.generate_tokens(user)
             AuthenticationService.send_verification_email(user)
 
@@ -35,14 +33,6 @@ class AuthenticationService:
     def login_user(email, password, ip_address=None):
         """
         Authenticate user and generate tokens.
-
-        Args:
-            email: User email
-            password: User password
-            ip_address: Client IP address
-
-        Returns:
-            Tuple of (user, tokens)
         """
         user = authenticate(email=email, password=password)
 
@@ -63,12 +53,6 @@ class AuthenticationService:
     def generate_tokens(user):
         """
         Generate JWT access and refresh tokens for user.
-
-        Args:
-            user: User instance
-
-        Returns:
-            Dictionary with access and refresh tokens
         """
         refresh = RefreshToken.for_user(user)
         return {
@@ -80,11 +64,6 @@ class AuthenticationService:
     def change_password(user, old_password, new_password):
         """
         Change user password after validating old password.
-
-        Args:
-            user: User instance
-            old_password: Current password
-            new_password: New password
         """
         if not user.check_password(old_password):
             raise ValidationError("Current password is incorrect")
@@ -96,9 +75,6 @@ class AuthenticationService:
     def request_password_reset(email):
         """
         Create password reset token and send reset email.
-
-        Args:
-            email: User email address
         """
         try:
             user = User.objects.get(email__iexact=email, is_active=True)
@@ -116,10 +92,6 @@ class AuthenticationService:
     def reset_password(token, new_password):
         """
         Reset user password using reset token.
-
-        Args:
-            token: Password reset token
-            new_password: New password
         """
         try:
             reset_token = PasswordResetToken.objects.get(token=token)
@@ -139,9 +111,6 @@ class AuthenticationService:
     def send_verification_email(user):
         """
         Send email verification link to user.
-
-        Args:
-            user: User instance
         """
         token = generate_random_string(64)
         expires_at = timezone.now() + timedelta(days=7)
@@ -162,9 +131,6 @@ class AuthenticationService:
     def verify_email(token):
         """
         Verify user email using verification token.
-
-        Args:
-            token: Email verification token
         """
         try:
             verification_token = EmailVerificationToken.objects.get(token=token)
@@ -184,10 +150,6 @@ class AuthenticationService:
     def send_password_reset_email(user, token):
         """
         Send password reset email to user.
-
-        Args:
-            user: User instance
-            token: Password reset token
         """
         # TODO: Implement email template and sending
         # send_email(

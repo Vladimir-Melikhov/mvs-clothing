@@ -29,12 +29,6 @@ class UserRegistrationView(APIView):
     def post(self, request):
         """
         Register a new user.
-
-        Args:
-            request: HTTP request
-
-        Returns:
-            Response with user data and tokens
         """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -58,12 +52,6 @@ class UserLoginView(APIView):
     def post(self, request):
         """
         Authenticate user and return tokens.
-
-        Args:
-            request: HTTP request
-
-        Returns:
-            Response with user data and tokens
         """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -92,21 +80,12 @@ class UserProfileView(generics.RetrieveAPIView):
     def get_object(self):
         """
         Return the current authenticated user.
-
-        Returns:
-            User instance
         """
         return self.request.user
 
     def retrieve(self, request, *args, **kwargs):
         """
         Retrieve user profile data.
-
-        Args:
-            request: HTTP request
-
-        Returns:
-            Response with user data
         """
         instance = self.get_object()
         serializer = self.get_serializer(instance)
@@ -126,21 +105,12 @@ class UserUpdateView(generics.UpdateAPIView):
     def get_object(self):
         """
         Return the current authenticated user.
-
-        Returns:
-            User instance
         """
         return self.request.user
 
     def update(self, request, *args, **kwargs):
         """
         Update user profile data.
-
-        Args:
-            request: HTTP request
-
-        Returns:
-            Response with updated user data
         """
         partial = kwargs.pop("partial", False)
         instance = self.get_object()
@@ -164,12 +134,6 @@ class ChangePasswordView(APIView):
     def post(self, request):
         """
         Change user password.
-
-        Args:
-        request: HTTP request
-
-        Returns:
-            Response with success message
         """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -194,12 +158,6 @@ class PasswordResetRequestView(APIView):
     def post(self, request):
         """
         Send password reset email to user.
-
-        Args:
-            request: HTTP request
-
-        Returns:
-            Response with success message
         """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -224,12 +182,6 @@ class PasswordResetConfirmView(APIView):
     def post(self, request):
         """
         Reset user password using token.
-
-        Args:
-            request: HTTP request
-
-        Returns:
-            Response with success message
         """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -253,12 +205,6 @@ class EmailVerificationView(APIView):
     def post(self, request):
         """
         Verify user email using token.
-
-        Args:
-            request: HTTP request
-
-        Returns:
-            Response with success message
         """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -278,12 +224,6 @@ class ResendVerificationEmailView(APIView):
     def post(self, request):
         """
         Resend verification email to user.
-
-        Args:
-            request: HTTP request
-
-        Returns:
-            Response with success message
         """
         user = request.user
 

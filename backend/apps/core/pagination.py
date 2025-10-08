@@ -15,12 +15,6 @@ class CustomPageNumberPagination(PageNumberPagination):
     def get_paginated_response(self, data):
         """
         Return a paginated response with standardized format.
-
-        Args:
-            data: Paginated data
-
-        Returns:
-            Response object with pagination metadata
         """
         return Response(
             OrderedDict(

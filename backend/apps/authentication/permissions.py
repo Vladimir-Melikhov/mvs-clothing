@@ -11,13 +11,6 @@ class IsEmailVerified(permissions.BasePermission):
     def has_permission(self, request, view):
         """
         Check if user has verified their email.
-
-        Args:
-            request: HTTP request
-            view: API view
-
-        Returns:
-            Boolean indicating permission status
         """
         return (
             request.user
@@ -36,13 +29,5 @@ class IsAccountOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         """
         Check if the user is accessing their own account.
-
-        Args:
-            request: HTTP request
-            view: API view
-            obj: User object
-
-        Returns:
-            Boolean indicating permission status
         """
         return obj == request.user

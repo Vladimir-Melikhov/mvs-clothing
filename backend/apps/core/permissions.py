@@ -11,14 +11,6 @@ class IsOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         """
         Check if the user owns the object.
-
-        Args:
-            request: HTTP request
-            view: API view
-            obj: Object to check permission for
-
-        Returns:
-            Boolean indicating permission status
         """
         return obj.user == request.user
 
@@ -32,14 +24,6 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         """
         Check object-level permissions.
-
-        Args:
-            request: HTTP request
-            view: API view
-            obj: Object to check permission for
-
-        Returns:
-            Boolean indicating permission status
         """
         if request.method in permissions.SAFE_METHODS:
             return True
@@ -56,13 +40,6 @@ class IsAdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         """
         Check view-level permissions.
-
-        Args:
-            request: HTTP request
-            view: API view
-
-        Returns:
-            Boolean indicating permission status
         """
         if request.method in permissions.SAFE_METHODS:
             return True

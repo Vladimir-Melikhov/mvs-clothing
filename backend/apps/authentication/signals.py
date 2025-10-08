@@ -9,14 +9,6 @@ User = get_user_model()
 def user_post_save(sender, instance, created, **kwargs):
     """
     Signal handler for User post-save events.
-
-    Args:
-        sender: Model class
-        instance: User instance
-        created: Boolean indicating if instance was created
-        **kwargs: Additional keyword arguments
     """
     if created:
-        # Perform actions after user creation
-        # For example: create user profile, send welcome email, etc.
         pass

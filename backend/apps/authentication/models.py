@@ -72,9 +72,6 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     def get_full_name(self):
         """
         Return the user's full name.
-
-        Returns:
-            Full name string
         """
         full_name = f"{self.first_name} {self.last_name}".strip()
         return full_name or self.email
@@ -82,9 +79,6 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     def get_short_name(self):
         """
         Return the user's short name.
-
-        Returns:
-            First name or email
         """
         return self.first_name or self.email
 
@@ -129,9 +123,6 @@ class PasswordResetToken(TimeStampedModel):
     def is_valid(self):
         """
         Check if the token is valid and not expired.
-
-        Returns:
-            Boolean indicating token validity
         """
         return not self.is_used and self.expires_at > timezone.now()
 
@@ -181,9 +172,6 @@ class EmailVerificationToken(TimeStampedModel):
     def is_valid(self):
         """
         Check if the token is valid and not expired.
-
-        Returns:
-            Boolean indicating token validity
         """
         return not self.is_used and self.expires_at > timezone.now()
 

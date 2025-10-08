@@ -7,13 +7,6 @@ from django.utils.translation import gettext_lazy as _
 def custom_exception_handler(exc, context):
     """
     Custom exception handler that returns consistent error responses.
-
-    Args:
-        exc: Exception instance
-        context: Exception context
-
-    Returns:
-        Response object with standardized error format
     """
     response = exception_handler(exc, context)
 

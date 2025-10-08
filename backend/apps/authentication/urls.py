@@ -15,14 +15,11 @@ from .views import (
 app_name = "authentication"
 
 urlpatterns = [
-    # Authentication endpoints
     path("register/", UserRegistrationView.as_view(), name="register"),
     path("login/", UserLoginView.as_view(), name="login"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
-    # User profile endpoints
     path("profile/", UserProfileView.as_view(), name="profile"),
     path("profile/update/", UserUpdateView.as_view(), name="profile-update"),
-    # Password management endpoints
     path("password/change/", ChangePasswordView.as_view(), name="password-change"),
     path(
         "password/reset/request/",
@@ -34,7 +31,6 @@ urlpatterns = [
         PasswordResetConfirmView.as_view(),
         name="password-reset-confirm",
     ),
-    # Email verification endpoints
     path("email/verify/", EmailVerificationView.as_view(), name="email-verify"),
     path("email/resend/", ResendVerificationEmailView.as_view(), name="email-resend"),
 ]

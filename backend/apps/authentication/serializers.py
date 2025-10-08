@@ -40,12 +40,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate_email(self, value):
         """
         Validate that the email is unique.
-
-        Args:
-            value: Email address
-
-        Returns:
-            Validated email
         """
         if User.objects.filter(email__iexact=value).exists():
             raise serializers.ValidationError("A user with this email already exists")
@@ -54,12 +48,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate_phone_number(self, value):
         """
         Validate phone number format.
-
-        Args:
-            value: Phone number
-
-        Returns:
-            Validated phone number
         """
         if value:
             validate_phone_number(value)
@@ -68,12 +56,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         """
         Validate that passwords match.
-
-        Args:
-            attrs: Serializer attributes
-
-        Returns:
-            Validated attributes
         """
         if attrs["password"] != attrs["password_confirm"]:
             raise serializers.ValidationError({"password": "Passwords do not match"})
@@ -82,12 +64,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """
         Create a new user instance.
-
-        Args:
-            validated_data: Validated data
-
-        Returns:
-            Created user instance
         """
         validated_data.pop("password_confirm")
         password = validated_data.pop("password")
@@ -108,12 +84,6 @@ class UserLoginSerializer(serializers.Serializer):
     def validate_email(self, value):
         """
         Normalize email to lowercase.
-
-        Args:
-            value: Email address
-
-        Returns:
-            Normalized email
         """
         return value.lower()
 
@@ -160,12 +130,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     def validate_phone_number(self, value):
         """
         Validate phone number format.
-
-        Args:
-            value: Phone number
-
-        Returns:
-            Validated phone number
         """
         if value:
             validate_phone_number(value)
@@ -193,12 +157,6 @@ class ChangePasswordSerializer(serializers.Serializer):
     def validate(self, attrs):
         """
         Validate that new passwords match.
-
-        Args:
-            attrs: Serializer attributes
-
-        Returns:
-            Validated attributes
         """
         if attrs["new_password"] != attrs["new_password_confirm"]:
             raise serializers.ValidationError(
@@ -217,12 +175,6 @@ class PasswordResetRequestSerializer(serializers.Serializer):
     def validate_email(self, value):
         """
         Normalize email to lowercase.
-
-        Args:
-            value: Email address
-
-        Returns:
-            Normalized email
         """
         return value.lower()
 
@@ -246,12 +198,6 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
     def validate(self, attrs):
         """
         Validate that new passwords match.
-
-        Args:
-            attrs: Serializer attributes
-
-        Returns:
-            Validated attributes
         """
         if attrs["new_password"] != attrs["new_password_confirm"]:
             raise serializers.ValidationError(
