@@ -2,14 +2,13 @@ import re
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+
 def validate_phone_number(value):
     """
     Validate phone number format (e.g., +1234567890, 1234567890).
     """
     cleaned_value = re.sub(r'[\s\-\(\)]', '', value)
-    
     phone_regex = re.compile(r'^\+?\d{9,15}$')
-
     if not phone_regex.match(cleaned_value):
         raise ValidationError(
             _(
