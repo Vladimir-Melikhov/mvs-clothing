@@ -2,7 +2,8 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenRefreshView
-from apps.core.responses import success_response, error_response, created_response
+from apps.core.responses import (success_response,
+                                 error_response, created_response)
 from apps.core.utils import get_client_ip
 from .serializers import (
     UserRegistrationSerializer,

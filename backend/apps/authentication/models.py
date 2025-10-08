@@ -24,7 +24,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         _("last name"), max_length=150, blank=True, help_text=_("User last name")
     )
     phone_number = models.CharField(
-        _("phone number"), max_length=20, blank=True, help_text=_("User phone number")
+        _("phone number"), max_length=20, unique=True, blank=True, help_text=_("User phone number")
     )
     date_of_birth = models.DateField(
         _("date of birth"), null=True, blank=True, help_text=_("User date of birth")
