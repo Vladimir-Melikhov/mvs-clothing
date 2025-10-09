@@ -24,7 +24,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         _("last name"), max_length=150, blank=True, help_text=_("User last name")
     )
     phone_number = models.CharField(
-        _("phone number"), max_length=20, unique=True, blank=True, help_text=_("User phone number")
+        _("phone number"), max_length=20, null=True, blank=True, help_text=_("User phone number")
     )
     date_of_birth = models.DateField(
         _("date of birth"), null=True, blank=True, help_text=_("User date of birth")
@@ -63,6 +63,13 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         indexes = [
             models.Index(fields=["email"]),
             models.Index(fields=["is_active", "is_email_verified"]),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=['phone_number'],
+                condition=models.Q(phone_number__isnull=False) & ~models.Q(phone_number=''),
+                name='unique_phone_when_not_empty'
+            )
         ]
 
     def __str__(self):
