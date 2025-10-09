@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError as DjangoValidationError
 from .models import User
-from .validators import validate_phone_number
+from .validators import validate_phone_number_format
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -42,15 +41,21 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         Validate that the email is unique.
         """
         if User.objects.filter(email__iexact=value).exists():
-            raise serializers.ValidationError("A user with this email already exists")
+            raise serializers.ValidationError("A user"
+                                              " with this email "
+                                              "already exists")
         return value.lower()
 
     def validate_phone_number(self, value):
         """
-        Validate phone number format.
+        Validate phone number format and uniqueness.
         """
         if value:
-            validate_phone_number(value)
+            validate_phone_number_format(value)
+            if User.objects.filter(phone_number=value).exists():
+                raise serializers.ValidationError(
+                    "A user with this phone number already exists"
+                )
         return value
 
     def validate(self, attrs):
@@ -58,7 +63,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         Validate that passwords match.
         """
         if attrs["password"] != attrs["password_confirm"]:
-            raise serializers.ValidationError({"password": "Passwords do not match"})
+            raise serializers.ValidationError({"password": "Passwords "
+                                                           "do not match"})
         return attrs
 
     def create(self, validated_data):
@@ -129,10 +135,17 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
     def validate_phone_number(self, value):
         """
-        Validate phone number format.
+        Validate phone number format and uniqueness.
         """
         if value:
-            validate_phone_number(value)
+            validate_phone_number_format(value)
+            queryset = User.objects.filter(phone_number=value)
+            if self.instance:
+                queryset = queryset.exclude(pk=self.instance.pk)
+            if queryset.exists():
+                raise serializers.ValidationError(
+                    "A user with this phone number already exists"
+                )
         return value
 
 
