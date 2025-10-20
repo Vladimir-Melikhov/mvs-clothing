@@ -6,7 +6,7 @@
         <div class="flex items-center justify-between">
           <div class="text-2xl font-bold tracking-wider">
             <router-link to="/" class="hover:text-gray-600 transition-colors" style="font-family: 'Times New Roman', Georgia, serif;">
-              VMS
+              Mvs-Clothing
             </router-link>
           </div>
           <div class="flex items-center space-x-6 text-sm">

@@ -7,7 +7,7 @@
         </h1>
         <div class="divider-line w-16 mx-auto mb-6"></div>
         <h2 class="text-2xl font-light tracking-wide text-gray-900">Create Account</h2>
-        <p class="mt-2 text-sm text-gray-600">Join VMC Fashion</p>
+        <p class="mt-2 text-sm text-gray-600">Join Mvs-Clothing</p>
       </div>
 
       <div class="bg-white py-8 px-8 shadow-sm border border-gray-200">

@@ -3,7 +3,7 @@
     <div class="max-w-md w-full">
       <div class="text-center mb-10">
         <h1 class="text-5xl font-light tracking-wider mb-4" style="font-family: 'Times New Roman', Georgia, serif;">
-          <router-link to="/" class="hover:text-gray-600 transition-colors">VMC</router-link>
+          <router-link to="/" class="hover:text-gray-600 transition-colors">Mvs-Clothing</router-link>
         </h1>
         <div class="divider-line w-16 mx-auto mb-6"></div>
         <h2 class="text-2xl font-light tracking-wide text-gray-900">Welcome Back</h2>
