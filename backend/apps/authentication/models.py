@@ -64,13 +64,6 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
             models.Index(fields=["email"]),
             models.Index(fields=["is_active", "is_email_verified"]),
         ]
-        constraints = [
-            models.UniqueConstraint(
-                fields=['phone_number'],
-                condition=models.Q(phone_number__isnull=False) & ~models.Q(phone_number=''),
-                name='unique_phone_when_not_empty'
-            )
-        ]
 
     def __str__(self):
         """Return string representation of the user."""
