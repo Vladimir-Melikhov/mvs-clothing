@@ -11,7 +11,6 @@
             </router-link>
           </div>
 
-          <!-- Desktop Navigation -->
           <div class="hidden md:flex items-center space-x-12 text-xs font-light tracking-[0.25em] transition-colors duration-700" :class="scrolled ? 'text-white' : 'text-black'">
             <a href="#" class="nav-link opacity-70 hover:opacity-100 transition-all duration-500">COLLECTION</a>
             <a href="#" class="nav-link opacity-70 hover:opacity-100 transition-all duration-500">MEN</a>

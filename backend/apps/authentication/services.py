@@ -120,12 +120,12 @@ class AuthenticationService:
         )
 
         # TODO: Implement email template and sending
-        # send_email(
-        #     subject='Verify your email address',
-        #     recipient_list=[user.email],
-        #     template_name='authentication/email_verification.html',
-        #     context={'user': user, 'token': token}
-        # )
+        send_email(
+            subject='Verify your email address',
+            recipient_list=[user.email],
+            template_name='authentication/email_verification.html',
+            context={'user': user, 'token': token}
+        )
 
     @staticmethod
     def verify_email(token):
