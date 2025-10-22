@@ -119,12 +119,13 @@ class AuthenticationService:
             user=user, token=token, expires_at=expires_at
         )
 
-        # TODO: Implement email template and sending
+        verification_url = f"http://localhost:5173/email/verify?token={token}"
+
         send_email(
             subject='Verify your email address',
             recipient_list=[user.email],
             template_name='authentication/email_verification.html',
-            context={'user': user, 'token': token}
+            context={'user': user, 'token': token, 'verification_url': verification_url}
         )
 
     @staticmethod
@@ -151,11 +152,11 @@ class AuthenticationService:
         """
         Send password reset email to user.
         """
-        # TODO: Implement email template and sending
-        # send_email(
-        #     subject='Reset your password',
-        #     recipient_list=[user.email],
-        #     template_name='authentication/password_reset.html',
-        #     context={'user': user, 'token': token}
-        # )
-        pass
+        reset_url = f"http://localhost:5173/password-reset/confirm?token={token}"
+
+        send_email(
+            subject='Reset your password',
+            recipient_list=[user.email],
+            template_name='authentication/password_reset.html',
+            context={'user': user, 'token': token, 'reset_url': reset_url}
+        )
