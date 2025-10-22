@@ -74,10 +74,14 @@
           2025
         </p>
         
-        <button class="group relative px-12 py-4 text-xs tracking-[0.3em] font-light border transition-all duration-700 overflow-hidden" :style="{ borderColor: heroBorderColor, backgroundColor: heroButtonBg, color: heroTextColor }">
+        <router-link
+          to="/products"
+          class="group relative px-12 py-4 text-xs tracking-[0.3em] font-light border transition-all duration-700 overflow-hidden inline-block"
+          :style="{ borderColor: heroBorderColor, backgroundColor: heroButtonBg, color: heroTextColor }"
+        >
           <span class="relative z-10">DISCOVER</span>
           <div class="absolute inset-0 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" :style="{ backgroundColor: heroButtonHoverBg }"></div>
-        </button>
+        </router-link>
       </div>
 
       <!-- Floating elements -->
@@ -103,37 +107,51 @@
       <div class="max-w-7xl mx-auto relative z-10">
         <!-- Gender Split Section -->
         <div class="grid md:grid-cols-2 gap-16">
-          <!-- Men's Section -->
-          <div class="group relative h-[500px] md:h-[600px] bg-zinc-900 overflow-hidden cursor-pointer">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-            <img src="/Users/vladimirmelihov/Downloads/mp/mvs-clothing/frontend/src/static/men1.WEBP" alt="Men's Collection"class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
-            <div class="absolute inset-0 border border-white/5 group-hover:border-white/20 transition-all duration-700"></div>
-            
-            <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
-              <div class="h-px w-12 bg-white/30 mb-6"></div>
-              <h3 class="text-xl md:text-2xl font-thin tracking-[0.25em] mb-3 opacity-90 text-white">MEN</h3>
-              <p class="text-xs tracking-[0.2em] opacity-50 mb-6 font-light text-gray-400">PRECISION IN SILENCE</p>
-              <div class="text-xs tracking-[0.3em] opacity-0 group-hover:opacity-70 transition-all duration-700 font-light text-white">
-                EXPLORE →
-              </div>
-            </div>
-          </div>
+  <!-- Men's Section -->
+  <router-link 
+    to="/products?gender=men"
+    class="group relative h-[500px] md:h-[600px] bg-zinc-900 overflow-hidden block"
+  >
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+    <img 
+      src="/src/static/men1.WEBP" 
+      alt="Men's Collection"
+      class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+    />
+    <div class="absolute inset-0 border border-white/5 group-hover:border-white/20 transition-all duration-700"></div>
+    
+    <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
+      <div class="h-px w-12 bg-white/30 mb-6"></div>
+      <h3 class="text-xl md:text-2xl font-thin tracking-[0.25em] mb-3 opacity-90 text-white">MEN</h3>
+      <p class="text-xs tracking-[0.2em] opacity-50 mb-6 font-light text-gray-400">PRECISION IN SILENCE</p>
+      <div class="text-xs tracking-[0.3em] opacity-0 group-hover:opacity-70 transition-all duration-700 font-light text-white">
+        EXPLORE →
+      </div>
+    </div>
+  </router-link>
 
-          <!-- Women's Section -->
-          <div class="group relative h-[500px] md:h-[600px] bg-zinc-900 overflow-hidden cursor-pointer">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-            <div class="absolute inset-0 border border-white/5 group-hover:border-white/20 transition-all duration-700"></div>
-            <img src="/Users/vladimirmelihov/Downloads/mp/mvs-clothing/frontend/src/static/women2.JPG" alt="Men's Collection"class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
-            <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
-              <div class="h-px w-12 bg-white/30 mb-6"></div>
-              <h3 class="text-xl md:text-2xl font-thin tracking-[0.25em] mb-3 opacity-90 text-white">WOMEN</h3>
-              <p class="text-xs tracking-[0.2em] opacity-50 mb-6 font-light text-gray-400">ELEGANCE UNDEFINED</p>
-              <div class="text-xs tracking-[0.3em] opacity-0 group-hover:opacity-70 transition-all duration-700 font-light text-white">
-                EXPLORE →
-              </div>
-            </div>
-          </div>
-        </div>
+  <!-- Women's Section -->
+  <router-link 
+    to="/products?gender=women"
+    class="group relative h-[500px] md:h-[600px] bg-zinc-900 overflow-hidden block"
+  >
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+    <div class="absolute inset-0 border border-white/5 group-hover:border-white/20 transition-all duration-700"></div>
+    <img 
+      src="/src/static/women2.JPG" 
+      alt="Women's Collection"
+      class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+    />
+    <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
+      <div class="h-px w-12 bg-white/30 mb-6"></div>
+      <h3 class="text-xl md:text-2xl font-thin tracking-[0.25em] mb-3 opacity-90 text-white">WOMEN</h3>
+      <p class="text-xs tracking-[0.2em] opacity-50 mb-6 font-light text-gray-400">ELEGANCE UNDEFINED</p>
+      <div class="text-xs tracking-[0.3em] opacity-0 group-hover:opacity-70 transition-all duration-700 font-light text-white">
+        EXPLORE →
+      </div>
+    </div>
+  </router-link>
+</div>
       </div>
     </section>
 

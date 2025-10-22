@@ -56,6 +56,17 @@ const router = createRouter({
       component: () => import('@/views/profile/ChangePasswordView.vue'),
       meta: { requiresAuth: true },
     },
+    // Products routes
+    {
+      path: '/products',
+      name: 'products',
+      component: () => import('@/views/products/ProductsView.vue'),
+    },
+    {
+      path: '/products/:slug',
+      name: 'product-detail',
+      component: () => import('@/views/products/ProductDetailView.vue'),
+    },
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
