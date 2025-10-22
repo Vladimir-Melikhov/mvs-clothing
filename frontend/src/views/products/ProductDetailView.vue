@@ -1,8 +1,3 @@
-<!--
-File: frontend/src/views/products/ProductDetailView.vue
-Purpose: Product detail page
--->
-
 <template>
     <div class="min-h-screen bg-white">
       <!-- Navigation -->

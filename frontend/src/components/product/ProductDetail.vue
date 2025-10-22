@@ -1,8 +1,3 @@
-<!--
-File: frontend/src/components/product/ProductDetail.vue
-Purpose: Detailed product view component with variant selection
--->
-
 <template>
     <div v-if="product" class="bg-white">
       <div class="max-w-7xl mx-auto px-6 py-12">
