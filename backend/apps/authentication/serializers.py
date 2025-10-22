@@ -37,9 +37,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         }
 
     def validate_email(self, value):
-        """
-        Validate that the email is unique.
-        """
+        """Validate that the email is unique."""
         if User.objects.filter(email__iexact=value).exists():
             raise serializers.ValidationError("A user"
                                               " with this email "
@@ -47,9 +45,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return value.lower()
 
     def validate_phone_number(self, value):
-        """
-        Validate phone number format and uniqueness.
-        """
+        """Validate phone number format and uniqueness."""
         if value:
             validate_phone_number_format(value)
             if User.objects.filter(phone_number=value).exists():
