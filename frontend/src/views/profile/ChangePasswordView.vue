@@ -1,27 +1,13 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Navigation -->
-    <nav class="bg-white border-b border-gray-200">
-      <div class="max-w-7xl mx-auto px-6 py-4">
-        <div class="flex items-center justify-between">
-          <div class="text-2xl font-bold tracking-wider">
-            <router-link to="/" class="hover:text-gray-600 transition-colors" style="font-family: 'Times New Roman', Georgia, serif;">
-              Mvs-Clothing
-            </router-link>
-          </div>
-          <div class="flex items-center space-x-6 text-sm">
-            <router-link to="/" class="text-gray-600 hover:text-black transition-colors">HOME</router-link>
-            <router-link to="/profile" class="text-gray-600 hover:text-black transition-colors">PROFILE</router-link>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <AppHeader variant="dark" />
 
     <!-- Change Password Form -->
-    <div class="max-w-2xl mx-auto px-6 py-12">
+    <div class="max-w-2xl mx-auto px-6 py-12 mt-20">
       <div class="mb-8">
-        <h1 class="text-3xl font-light tracking-wide text-gray-900">Change Password</h1>
-        <p class="mt-2 text-sm text-gray-600">Update your account password</p>
+        <h1 class="text-3xl font-light tracking-[0.3em] text-gray-900" style="font-family: Georgia, serif;">Change Password</h1>
+        <p class="mt-2 text-sm text-gray-600 tracking-wide">Update your account password</p>
       </div>
 
       <div class="bg-white border border-gray-200 rounded-lg p-8">
@@ -124,6 +110,7 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import AppHeader from '@/components/layout/AppHeader.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -150,7 +137,6 @@ const handleSubmit = async () => {
 
     if (result.success) {
       successMessage.value = result.message
-      // Reset form
       formData.old_password = ''
       formData.new_password = ''
       formData.new_password_confirm = ''

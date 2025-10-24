@@ -1,39 +1,15 @@
 <template>
     <div class="min-h-screen bg-gray-50">
       <!-- Navigation -->
-      <nav class="bg-white border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-          <div class="flex items-center justify-between">
-            <div class="text-2xl font-bold tracking-wider">
-              <router-link
-                to="/"
-                class="hover:text-gray-600 transition-colors"
-                style="font-family: 'Times New Roman', Georgia, serif"
-              >
-                Mvs-Clothing
-              </router-link>
-            </div>
-            <div class="flex items-center space-x-6 text-sm">
-              <router-link to="/" class="text-gray-600 hover:text-black transition-colors">
-                HOME
-              </router-link>
-              <router-link
-                v-if="isAuthenticated"
-                to="/profile"
-                class="text-gray-600 hover:text-black transition-colors"
-              >
-                PROFILE
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <AppHeader variant="dark" />
   
       <!-- Page Header -->
-      <div class="bg-white border-b border-gray-200 py-12">
+      <div class="bg-white border-b border-gray-200 py-12 mt-20">
         <div class="max-w-7xl mx-auto px-6">
-          <h1 class="text-4xl font-light tracking-wide text-gray-900 mb-2">Products</h1>
-          <p class="text-sm text-gray-600">
+          <h1 class="text-4xl font-light tracking-[0.3em] text-gray-900 mb-2" style="font-family: Georgia, serif;">
+            Products
+          </h1>
+          <p class="text-sm text-gray-600 tracking-wide">
             Showing {{ productsStore.pagination.count }} products
           </p>
         </div>
@@ -125,16 +101,13 @@
   import { ref, computed, onMounted, watch } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { useProductsStore } from '@/stores/products'
-  import { useAuthStore } from '@/stores/auth'
   import ProductGrid from '@/components/product/ProductGrid.vue'
   import ProductFilters from '@/components/product/ProductFilters.vue'
+  import AppHeader from '@/components/layout/AppHeader.vue'
   
   const route = useRoute()
   const router = useRouter()
   const productsStore = useProductsStore()
-  const authStore = useAuthStore()
-  
-  const isAuthenticated = computed(() => authStore.isAuthenticated)
   
   const filters = ref({})
   const sortBy = ref('-created_at')
@@ -205,10 +178,8 @@
   }
   
   onMounted(async () => {
-    // Fetch categories for filters
     await productsStore.fetchCategories()
   
-    // Parse query parameters
     if (route.query.category) {
       filters.value.category = route.query.category
     }
@@ -216,11 +187,9 @@
       filters.value.gender = route.query.gender
     }
   
-    // Fetch products
     await fetchProducts()
   })
   
-  // Watch for route changes
   watch(
     () => route.query,
     (newQuery) => {

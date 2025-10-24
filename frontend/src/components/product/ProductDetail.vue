@@ -192,15 +192,6 @@
               </div>
             </div>
   
-            <!-- Add to Cart Button -->
-            <button
-              @click="addToCart"
-              :disabled="!canAddToCart"
-              class="w-full px-8 py-4 border border-black text-sm font-medium tracking-widest text-black bg-white hover:bg-black hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed mb-4"
-            >
-              {{ addToCartButtonText }}
-            </button>
-  
             <!-- Product Description -->
             <div class="border-t border-gray-200 pt-6 mt-6">
               <h3 class="text-sm font-medium text-gray-900 mb-3 tracking-wider">
@@ -252,7 +243,6 @@
   
   <script setup>
   import { ref, computed, watch } from 'vue'
-  import { useCartStore } from '@/stores/cart'
   
   const props = defineProps({
     product: {
@@ -260,8 +250,6 @@
       required: true,
     },
   })
-  
-  const cartStore = useCartStore()
   
   // Image handling
   const selectedImageIndex = ref(0)
@@ -318,49 +306,6 @@
     if (quantity.value > 1) {
       quantity.value--
     }
-  }
-  
-  // Add to cart logic
-  const canAddToCart = computed(() => {
-    return (
-      props.product.is_in_stock &&
-      selectedSize.value &&
-      selectedColor.value &&
-      quantity.value > 0
-    )
-  })
-  
-  const addToCartButtonText = computed(() => {
-    if (!props.product.is_in_stock) {
-      return 'OUT OF STOCK'
-    }
-    if (!selectedSize.value || !selectedColor.value) {
-      return 'SELECT OPTIONS'
-    }
-    return 'ADD TO CART'
-  })
-  
-  const addToCart = async () => {
-    if (!canAddToCart.value) return
-  
-    // Find the matching variant
-    const variant = props.product.variants.find(
-      (v) => v.size === selectedSize.value && v.color === selectedColor.value
-    )
-  
-    if (!variant) {
-      alert('Selected variant not available')
-      return
-    }
-  
-    await cartStore.addItem({
-      product_id: props.product.id,
-      variant_id: variant.id,
-      quantity: quantity.value,
-    })
-  
-    // Reset quantity after adding
-    quantity.value = 1
   }
   
   const openImageModal = () => {

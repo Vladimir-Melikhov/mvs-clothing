@@ -11,10 +11,11 @@ Purpose: Reusable product card component for displaying product in lists
       <!-- Product Image -->
       <div class="relative aspect-[3/4] overflow-hidden bg-gray-100">
         <img
-          v-if="product.primary_image"
-          :src="product.primary_image"
+          v-if="imageUrl"
+          :src="imageUrl"
           :alt="product.name"
           class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          @error="handleImageError"
         />
         <div
           v-else
@@ -85,15 +86,43 @@ Purpose: Reusable product card component for displaying product in lists
   </template>
   
   <script setup>
+  import { computed } from 'vue'
+  
   /**
    * Props definition for product card
    */
-  defineProps({
+  const props = defineProps({
     product: {
       type: Object,
       required: true,
     },
   })
+  
+  /**
+   * Get image URL - handles both absolute and relative URLs
+   */
+  const imageUrl = computed(() => {
+    const img = props.product.primary_image
+    
+    if (!img) return null
+    
+    // If already absolute URL, return as is
+    if (img.startsWith('http://') || img.startsWith('https://')) {
+      return img
+    }
+    
+    // If relative URL, prepend backend URL
+    return `http://localhost:8002${img}`
+  })
+  
+  /**
+   * Handle image load error
+   */
+  const handleImageError = (e) => {
+    console.error('Failed to load image for product:', props.product.name)
+    console.error('Image URL:', imageUrl.value)
+    console.error('Original primary_image:', props.product.primary_image)
+  }
   </script>
   
   <style scoped>

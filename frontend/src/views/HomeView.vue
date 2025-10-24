@@ -1,58 +1,7 @@
 <template>
   <div class="min-h-screen transition-colors duration-1000" :style="{ backgroundColor: backgroundColor }">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 transition-all duration-700" :class="scrolled ? 'bg-black/90 border-white/10' : 'bg-white/90 border-gray-200'" :style="{ borderBottomWidth: '1px', borderBottomStyle: 'solid' }">
-      <div class="max-w-7xl mx-auto px-6 py-5">
-        <div class="flex items-center justify-between">
-          <!-- Logo -->
-          <div class="text-xl font-light tracking-[0.3em] transition-colors duration-700" :class="scrolled ? 'text-white' : 'text-black'">
-            <router-link to="/" class="hover:opacity-60 transition-opacity duration-500">
-              MVS
-            </router-link>
-          </div>
-
-          <div class="hidden md:flex items-center space-x-12 text-xs font-light tracking-[0.25em] transition-colors duration-700" :class="scrolled ? 'text-white' : 'text-black'">
-            <a href="#" class="nav-link opacity-70 hover:opacity-100 transition-all duration-500">COLLECTION</a>
-            <a href="#" class="nav-link opacity-70 hover:opacity-100 transition-all duration-500">MEN</a>
-            <a href="#" class="nav-link opacity-70 hover:opacity-100 transition-all duration-500">WOMEN</a>
-          </div>
-
-          <!-- Right Navigation -->
-          <div class="hidden md:flex items-center space-x-8 text-xs tracking-[0.2em] transition-colors duration-700" :class="scrolled ? 'text-white' : 'text-black'">
-            <router-link v-if="!isAuthenticated" to="/login" class="nav-link opacity-70 hover:opacity-100 transition-all duration-500">
-              LOG IN
-            </router-link>
-            <router-link v-if="isAuthenticated" to="/profile" class="nav-link opacity-70 hover:opacity-100 transition-all duration-500">
-              PROFILE
-            </router-link>
-          </div>
-
-          <!-- Mobile Menu Button -->
-          <button @click="mobileMenu = !mobileMenu" class="md:hidden transition-colors duration-700" :class="scrolled ? 'text-white' : 'text-black'">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Mobile Menu -->
-      <div v-show="mobileMenu" class="md:hidden border-t transition-all duration-700" :class="scrolled ? 'bg-black/95 border-white/10 text-white' : 'bg-white border-gray-200 text-black'">
-        <div class="px-6 py-6 space-y-6 text-xs tracking-[0.2em]">
-          <a href="#" class="block opacity-70 hover:opacity-100 transition-opacity">COLLECTION</a>
-          <a href="#" class="block opacity-70 hover:opacity-100 transition-opacity">MEN</a>
-          <a href="#" class="block opacity-70 hover:opacity-100 transition-opacity">WOMEN</a>
-          <div class="pt-6 border-t transition-colors duration-700" :class="scrolled ? 'border-white/10' : 'border-gray-200'">
-            <router-link v-if="!isAuthenticated" to="/login" class="block opacity-70 hover:opacity-100 transition-opacity">
-              LOG IN
-            </router-link>
-            <router-link v-if="isAuthenticated" to="/profile" class="block opacity-70 hover:opacity-100 transition-opacity">
-              PROFILE
-            </router-link>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <AppHeader />
 
     <!-- Hero Section - Light -->
     <section class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
@@ -107,51 +56,51 @@
       <div class="max-w-7xl mx-auto relative z-10">
         <!-- Gender Split Section -->
         <div class="grid md:grid-cols-2 gap-16">
-  <!-- Men's Section -->
-  <router-link 
-    to="/products?gender=men"
-    class="group relative h-[500px] md:h-[600px] bg-zinc-900 overflow-hidden block"
-  >
-    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-    <img 
-      src="/src/static/men1.WEBP" 
-      alt="Men's Collection"
-      class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-    />
-    <div class="absolute inset-0 border border-white/5 group-hover:border-white/20 transition-all duration-700"></div>
-    
-    <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
-      <div class="h-px w-12 bg-white/30 mb-6"></div>
-      <h3 class="text-xl md:text-2xl font-thin tracking-[0.25em] mb-3 opacity-90 text-white">MEN</h3>
-      <p class="text-xs tracking-[0.2em] opacity-50 mb-6 font-light text-gray-400">PRECISION IN SILENCE</p>
-      <div class="text-xs tracking-[0.3em] opacity-0 group-hover:opacity-70 transition-all duration-700 font-light text-white">
-        EXPLORE →
-      </div>
-    </div>
-  </router-link>
+          <!-- Men's Section -->
+          <router-link 
+            to="/products?gender=men"
+            class="group relative h-[500px] md:h-[600px] bg-zinc-900 overflow-hidden block"
+          >
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+            <img 
+              src="/src/static/men1.WEBP" 
+              alt="Men's Collection"
+              class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 border border-white/5 group-hover:border-white/20 transition-all duration-700"></div>
+            
+            <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
+              <div class="h-px w-12 bg-white/30 mb-6"></div>
+              <h3 class="text-xl md:text-2xl font-thin tracking-[0.25em] mb-3 opacity-90 text-white">MEN</h3>
+              <p class="text-xs tracking-[0.2em] opacity-50 mb-6 font-light text-gray-400">PRECISION IN SILENCE</p>
+              <div class="text-xs tracking-[0.3em] opacity-0 group-hover:opacity-70 transition-all duration-700 font-light text-white">
+                EXPLORE →
+              </div>
+            </div>
+          </router-link>
 
-  <!-- Women's Section -->
-  <router-link 
-    to="/products?gender=women"
-    class="group relative h-[500px] md:h-[600px] bg-zinc-900 overflow-hidden block"
-  >
-    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-    <div class="absolute inset-0 border border-white/5 group-hover:border-white/20 transition-all duration-700"></div>
-    <img 
-      src="/src/static/women2.JPG" 
-      alt="Women's Collection"
-      class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-    />
-    <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
-      <div class="h-px w-12 bg-white/30 mb-6"></div>
-      <h3 class="text-xl md:text-2xl font-thin tracking-[0.25em] mb-3 opacity-90 text-white">WOMEN</h3>
-      <p class="text-xs tracking-[0.2em] opacity-50 mb-6 font-light text-gray-400">ELEGANCE UNDEFINED</p>
-      <div class="text-xs tracking-[0.3em] opacity-0 group-hover:opacity-70 transition-all duration-700 font-light text-white">
-        EXPLORE →
-      </div>
-    </div>
-  </router-link>
-</div>
+          <!-- Women's Section -->
+          <router-link 
+            to="/products?gender=women"
+            class="group relative h-[500px] md:h-[600px] bg-zinc-900 overflow-hidden block"
+          >
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+            <div class="absolute inset-0 border border-white/5 group-hover:border-white/20 transition-all duration-700"></div>
+            <img 
+              src="/src/static/women2.JPG" 
+              alt="Women's Collection"
+              class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
+              <div class="h-px w-12 bg-white/30 mb-6"></div>
+              <h3 class="text-xl md:text-2xl font-thin tracking-[0.25em] mb-3 opacity-90 text-white">WOMEN</h3>
+              <p class="text-xs tracking-[0.2em] opacity-50 mb-6 font-light text-gray-400">ELEGANCE UNDEFINED</p>
+              <div class="text-xs tracking-[0.3em] opacity-0 group-hover:opacity-70 transition-all duration-700 font-light text-white">
+                EXPLORE →
+              </div>
+            </div>
+          </router-link>
+        </div>
       </div>
     </section>
 
@@ -195,9 +144,9 @@
           <div>
             <h5 class="text-xs tracking-[0.2em] mb-6 opacity-90 font-light transition-colors duration-700" :style="{ color: footerTitleColor }">EXPLORE</h5>
             <ul class="space-y-3 text-xs opacity-70 tracking-wider font-light transition-colors duration-700" :style="{ color: footerTextColor }">
-              <li><a href="#" class="hover:opacity-100 transition-opacity">Men's</a></li>
-              <li><a href="#" class="hover:opacity-100 transition-opacity">Women's</a></li>
-              <li><a href="#" class="hover:opacity-100 transition-opacity">Archive</a></li>
+              <li><router-link to="/products?gender=men" class="hover:opacity-100 transition-opacity">Men's</router-link></li>
+              <li><router-link to="/products?gender=women" class="hover:opacity-100 transition-opacity">Women's</router-link></li>
+              <li><router-link to="/products" class="hover:opacity-100 transition-opacity">Archive</router-link></li>
             </ul>
           </div>
 
@@ -233,12 +182,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useAuthStore } from '@/stores/auth'
+import { ref, onMounted, onUnmounted } from 'vue'
+import AppHeader from '@/components/layout/AppHeader.vue'
 
-const authStore = useAuthStore()
-const mobileMenu = ref(false)
-const scrolled = ref(false)
 const transitionProgress = ref(0)
 const backgroundColor = ref('rgb(255, 255, 255)')
 
@@ -250,7 +196,6 @@ const heroButtonBg = ref('rgb(255, 255, 255)')
 const heroButtonHoverBg = ref('rgba(0, 0, 0, 0.05)')
 const heroFloatingLineColor = ref('rgba(0, 0, 0, 0.1)')
 
-// Dynamic colors for dark sections
 const philosophyTitleColor = ref('rgb(120, 120, 120)')
 const philosophyTextColor = ref('rgb(156, 156, 156)')
 const philosophyLineColor = ref('rgba(255, 255, 255, 0.2)')
@@ -261,11 +206,8 @@ const footerTitleColor = ref('rgb(120, 120, 120)')
 const footerTextColor = ref('rgb(200, 200, 200)')
 const footerCopyrightColor = ref('rgb(180, 180, 180)')
 
-const isAuthenticated = computed(() => authStore.isAuthenticated)
-
 const handleScroll = () => {
   const currentScroll = window.scrollY
-  scrolled.value = currentScroll > 100
 
   const heroHeight = window.innerHeight
   const transitionStart = heroHeight * 0.3
@@ -291,16 +233,11 @@ const handleScroll = () => {
   heroSubTextColor.value = `rgb(${subTextValue}, ${Math.round(114 + (46 * progress))}, ${Math.round(128 + (32 * progress))})`
 
   heroDividerColor.value = `rgba(${textValue}, ${textValue}, ${textValue}, 0.2)`
-
   heroBorderColor.value = `rgba(${textValue}, ${textValue}, ${textValue}, 0.2)`
-
   heroButtonBg.value = `rgb(${bgValue}, ${bgValue}, ${bgValue})`
-  
   heroButtonHoverBg.value = `rgba(${textValue}, ${textValue}, ${textValue}, 0.05)`
-  
   heroFloatingLineColor.value = `rgba(${textValue}, ${textValue}, ${textValue}, 0.1)`
   
-  // Update philosophy and footer colors based on progress
   const philoTitleValue = Math.round(120 + (135 * progress))
   philosophyTitleColor.value = `rgb(${philoTitleValue}, ${philoTitleValue}, ${philoTitleValue})`
   
@@ -339,7 +276,7 @@ const handleScroll = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
-  handleScroll() // Initial call
+  handleScroll()
 })
 
 onUnmounted(() => {
@@ -378,25 +315,6 @@ onUnmounted(() => {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.nav-link {
-  position: relative;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: currentColor;
-  transition: width 0.5s ease;
-}
-
-.nav-link:hover::after {
-  width: 100%;
 }
 
 .transition-section {

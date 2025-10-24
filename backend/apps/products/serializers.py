@@ -41,6 +41,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ProductImageSerializer(serializers.ModelSerializer):
     """Serializer for ProductImage model."""
+    
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = ProductImage
@@ -52,6 +54,15 @@ class ProductImageSerializer(serializers.ModelSerializer):
             "order",
         ]
         read_only_fields = ["id"]
+    
+    def get_image(self, obj):
+        """Get absolute URL for image."""
+        request = self.context.get('request')
+        if obj.image and request:
+            return request.build_absolute_uri(obj.image.url)
+        elif obj.image:
+            return obj.image.url
+        return None
 
 
 class ProductVariantSerializer(serializers.ModelSerializer):
@@ -107,13 +118,21 @@ class ProductListSerializer(serializers.ModelSerializer):
         ]
 
     def get_primary_image(self, obj):
-        """Get primary product image."""
+        """Get primary product image with absolute URL."""
+        request = self.context.get("request")
+        
+        # Try to get primary image first
         primary_image = obj.images.filter(is_primary=True, is_deleted=False).first()
-        if primary_image:
-            request = self.context.get("request")
+        
+        # If no primary image, get the first available image
+        if not primary_image:
+            primary_image = obj.images.filter(is_deleted=False).order_by('order', 'id').first()
+        
+        if primary_image and primary_image.image:
             if request:
                 return request.build_absolute_uri(primary_image.image.url)
             return primary_image.image.url
+        
         return None
 
 

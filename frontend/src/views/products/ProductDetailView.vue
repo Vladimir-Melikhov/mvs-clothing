@@ -1,49 +1,17 @@
 <template>
     <div class="min-h-screen bg-white">
       <!-- Navigation -->
-      <nav class="bg-white border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-          <div class="flex items-center justify-between">
-            <div class="text-2xl font-bold tracking-wider">
-              <router-link
-                to="/"
-                class="hover:text-gray-600 transition-colors"
-                style="font-family: 'Times New Roman', Georgia, serif"
-              >
-                Mvs-Clothing
-              </router-link>
-            </div>
-            <div class="flex items-center space-x-6 text-sm">
-              <router-link to="/" class="text-gray-600 hover:text-black transition-colors">
-                HOME
-              </router-link>
-              <router-link
-                to="/products"
-                class="text-gray-600 hover:text-black transition-colors"
-              >
-                PRODUCTS
-              </router-link>
-              <router-link
-                v-if="isAuthenticated"
-                to="/profile"
-                class="text-gray-600 hover:text-black transition-colors"
-              >
-                PROFILE
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <AppHeader variant="dark" />
   
       <!-- Loading State -->
-      <div v-if="productsStore.loading" class="flex items-center justify-center py-20">
+      <div v-if="productsStore.loading" class="flex items-center justify-center py-20 mt-20">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
       </div>
   
       <!-- Error State -->
       <div
         v-else-if="productsStore.error"
-        class="max-w-7xl mx-auto px-6 py-20 text-center"
+        class="max-w-7xl mx-auto px-6 py-20 text-center mt-20"
       >
         <h2 class="text-2xl font-light text-gray-900 mb-4">Product Not Found</h2>
         <p class="text-gray-600 mb-8">The product you're looking for doesn't exist.</p>
@@ -56,7 +24,9 @@
       </div>
   
       <!-- Product Detail -->
-      <ProductDetail v-else-if="productsStore.currentProduct" :product="productsStore.currentProduct" />
+      <div class="mt-20">
+        <ProductDetail v-if="productsStore.currentProduct" :product="productsStore.currentProduct" />
+      </div>
   
       <!-- Related Products -->
       <div
@@ -80,26 +50,20 @@
   </template>
   
   <script setup>
-  import { computed, onMounted } from 'vue'
+  import { onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import { useProductsStore } from '@/stores/products'
-  import { useAuthStore } from '@/stores/auth'
   import ProductDetail from '@/components/product/ProductDetail.vue'
   import ProductCard from '@/components/product/ProductCard.vue'
+  import AppHeader from '@/components/layout/AppHeader.vue'
   
   const route = useRoute()
   const productsStore = useProductsStore()
-  const authStore = useAuthStore()
-  
-  const isAuthenticated = computed(() => authStore.isAuthenticated)
   
   onMounted(async () => {
     const slug = route.params.slug
-  
-    // Fetch product details
     await productsStore.fetchProductBySlug(slug)
   
-    // Fetch related products
     if (productsStore.currentProduct) {
       await productsStore.fetchRelatedProducts(slug)
     }

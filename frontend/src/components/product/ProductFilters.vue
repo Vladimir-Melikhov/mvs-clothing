@@ -11,6 +11,18 @@ Purpose: Filters component for product catalog
       <div class="mb-8">
         <h4 class="text-sm font-medium text-gray-900 mb-3 tracking-wider">CATEGORY</h4>
         <div class="space-y-2">
+          <label class="flex items-center cursor-pointer group">
+            <input
+              type="radio"
+              value=""
+              v-model="localFilters.category"
+              @change="emitFilters"
+              class="w-4 h-4 text-black border-gray-300 focus:ring-black"
+            />
+            <span class="ml-3 text-sm text-gray-700 group-hover:text-black transition-colors">
+              All Categories
+            </span>
+          </label>
           <label
             v-for="category in categories"
             :key="category.id"
@@ -25,18 +37,6 @@ Purpose: Filters component for product catalog
             />
             <span class="ml-3 text-sm text-gray-700 group-hover:text-black transition-colors">
               {{ category.name }}
-            </span>
-          </label>
-          <label class="flex items-center cursor-pointer group">
-            <input
-              type="radio"
-              value=""
-              v-model="localFilters.category"
-              @change="emitFilters"
-              class="w-4 h-4 text-black border-gray-300 focus:ring-black"
-            />
-            <span class="ml-3 text-sm text-gray-700 group-hover:text-black transition-colors">
-              All Categories
             </span>
           </label>
         </div>
@@ -151,8 +151,15 @@ Purpose: Filters component for product catalog
   watch(
     () => props.filters,
     (newFilters) => {
-      localFilters.value = { ...newFilters }
-    }
+      localFilters.value = {
+        category: newFilters.category || '',
+        gender: newFilters.gender || '',
+        min_price: newFilters.min_price || null,
+        max_price: newFilters.max_price || null,
+        in_stock: newFilters.in_stock || false,
+      }
+    },
+    { deep: true }
   )
   
   const emitFilters = () => {
@@ -179,4 +186,3 @@ Purpose: Filters component for product catalog
     emitFilters()
   }
   </script>
-  

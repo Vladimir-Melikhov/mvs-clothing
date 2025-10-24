@@ -1,27 +1,13 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Navigation -->
-    <nav class="bg-white border-b border-gray-200">
-      <div class="max-w-7xl mx-auto px-6 py-4">
-        <div class="flex items-center justify-between">
-          <div class="text-2xl font-bold tracking-wider">
-            <router-link to="/" class="hover:text-gray-600 transition-colors" style="font-family: 'Times New Roman', Georgia, serif;">
-              Mvs-Clothing
-            </router-link>
-          </div>
-          <div class="flex items-center space-x-6 text-sm">
-            <router-link to="/" class="text-gray-600 hover:text-black transition-colors">HOME</router-link>
-            <button @click="handleLogout" class="text-gray-600 hover:text-black transition-colors">LOGOUT</button>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <AppHeader variant="dark" />
 
     <!-- Profile Content -->
-    <div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="max-w-7xl mx-auto px-6 py-12 mt-20">
       <div class="mb-8">
-        <h1 class="text-3xl font-light tracking-wide text-gray-900">My Profile</h1>
-        <p class="mt-2 text-sm text-gray-600">Manage your account information</p>
+        <h1 class="text-3xl font-light tracking-[0.3em] text-gray-900" style="font-family: Georgia, serif;">My Profile</h1>
+        <p class="mt-2 text-sm text-gray-600 tracking-wide">Manage your account information</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-8">
@@ -65,6 +51,14 @@
                   >
                     Change Password
                   </router-link>
+                </li>
+                <li>
+                  <button
+                    @click="handleLogout"
+                    class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded transition-colors"
+                  >
+                    Logout
+                  </button>
                 </li>
               </ul>
             </nav>
@@ -169,6 +163,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import AppHeader from '@/components/layout/AppHeader.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -229,7 +224,3 @@ onMounted(async () => {
   }
 })
 </script>
-
-<style scoped>
-/* Additional styles if needed */
-</style>
