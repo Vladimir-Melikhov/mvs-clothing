@@ -3,6 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from apps.core.responses import success_response
 from apps.core.pagination import CustomPageNumberPagination
 from .models import Product, Category
@@ -15,6 +17,8 @@ from .services import ProductService, CategoryService
 from .filters import ProductFilter
 
 
+# кэширование на 15 минут
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class CategoryListView(generics.ListAPIView):
     """API view for listing categories."""
 
@@ -110,6 +114,8 @@ class ProductDetailView(generics.RetrieveAPIView):
         )
 
 
+# кэширование на 30 минут
+@method_decorator(cache_page(60 * 30), name='dispatch')
 class FeaturedProductsView(APIView):
     """
     API view for featured products.

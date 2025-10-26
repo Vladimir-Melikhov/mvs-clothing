@@ -1,9 +1,8 @@
 import axios from 'axios'
 import router from '@/router'
 
-const API_BASE_URL = 'http://localhost:8002/api/v1'  // Измените порт если нужно
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8002/api/v1'
 
-// Create axios instance with default config
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -11,7 +10,49 @@ const apiClient = axios.create({
   },
 })
 
-// Request interceptor to add auth token
+export const setAccessToken = (token) => {
+  if (token) {
+    sessionStorage.setItem('access_token', token)
+  } else {
+    sessionStorage.removeItem('access_token')
+  }
+}
+
+export const setRefreshToken = (token) => {
+  if (token) {
+    sessionStorage.setItem('refresh_token', token)
+  } else {
+    sessionStorage.removeItem('refresh_token')
+  }
+}
+
+export const setCurrentUser = (user) => {
+  if (user) {
+    sessionStorage.setItem('current_user', JSON.stringify(user))
+  } else {
+    sessionStorage.removeItem('current_user')
+  }
+}
+
+export const getAccessToken = () => {
+  return sessionStorage.getItem('access_token')
+}
+
+export const getRefreshToken = () => {
+  return sessionStorage.getItem('refresh_token')
+}
+
+export const getCurrentUser = () => {
+  const user = sessionStorage.getItem('current_user')
+  return user ? JSON.parse(user) : null
+}
+
+export const clearTokens = () => {
+  sessionStorage.removeItem('access_token')
+  sessionStorage.removeItem('refresh_token')
+  sessionStorage.removeItem('current_user')
+}
+
 apiClient.interceptors.request.use(
   (config) => {
     const token = getAccessToken()
@@ -25,13 +66,11 @@ apiClient.interceptors.request.use(
   }
 )
 
-// Response interceptor to handle token refresh
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config
 
-    // If error is 401 and we haven't tried to refresh token yet
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
 
@@ -59,48 +98,6 @@ apiClient.interceptors.response.use(
   }
 )
 
-// Token management functions (using memory storage as per requirements)
-let accessToken = null
-let refreshToken = null
-let currentUser = null
-
-export const setAccessToken = (token) => {
-  accessToken = token
-  window.accessToken = token
-}
-
-export const setRefreshToken = (token) => {
-  refreshToken = token
-  window.refreshToken = token
-}
-
-export const setCurrentUser = (user) => {
-  currentUser = user
-  window.currentUser = user
-}
-
-export const getAccessToken = () => {
-  return accessToken || window.accessToken
-}
-
-export const getRefreshToken = () => {
-  return refreshToken || window.refreshToken
-}
-
-export const getCurrentUser = () => {
-  return currentUser || window.currentUser
-}
-
-export const clearTokens = () => {
-  accessToken = null
-  refreshToken = null
-  currentUser = null
-  window.accessToken = null
-  window.refreshToken = null
-  window.currentUser = null
-}
-
-// API methods
 export const authAPI = {
   register: (userData) => apiClient.post('/auth/register/', userData),
   login: (credentials) => apiClient.post('/auth/login/', credentials),

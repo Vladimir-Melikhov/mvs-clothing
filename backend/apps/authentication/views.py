@@ -1,7 +1,7 @@
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework.throttling import AnonRateThrottle
 from apps.core.responses import (success_response,
                                  error_response, created_response)
 from apps.core.utils import get_client_ip
@@ -19,18 +19,24 @@ from .services import AuthenticationService
 from .permissions import IsAccountOwner
 
 
-class UserRegistrationView(APIView):
-    """
-    API view for user registration.
-    """
+class AuthRateThrottle(AnonRateThrottle):
+    rate = '5/hour'
 
+
+class RegisterRateThrottle(AnonRateThrottle):
+    rate = '3/hour'
+
+
+class PasswordResetRateThrottle(AnonRateThrottle):
+    rate = '3/hour'
+
+
+class UserRegistrationView(APIView):
     permission_classes = [AllowAny]
     serializer_class = UserRegistrationSerializer
+    throttle_classes = [RegisterRateThrottle]
 
     def post(self, request):
-        """
-        Register a new user.
-        """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -43,17 +49,11 @@ class UserRegistrationView(APIView):
 
 
 class UserLoginView(APIView):
-    """
-    API view for user login.
-    """
-
     permission_classes = [AllowAny]
     serializer_class = UserLoginSerializer
+    throttle_classes = [AuthRateThrottle]
 
     def post(self, request):
-        """
-        Authenticate user and return tokens.
-        """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -71,23 +71,13 @@ class UserLoginView(APIView):
 
 
 class UserProfileView(generics.RetrieveAPIView):
-    """
-    API view for retrieving user profile.
-    """
-
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
 
     def get_object(self):
-        """
-        Return the current authenticated user.
-        """
         return self.request.user
 
     def retrieve(self, request, *args, **kwargs):
-        """
-        Retrieve user profile data.
-        """
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return success_response(
@@ -96,23 +86,13 @@ class UserProfileView(generics.RetrieveAPIView):
 
 
 class UserUpdateView(generics.UpdateAPIView):
-    """
-    API view for updating user profile.
-    """
-
     permission_classes = [IsAuthenticated, IsAccountOwner]
     serializer_class = UserUpdateSerializer
 
     def get_object(self):
-        """
-        Return the current authenticated user.
-        """
         return self.request.user
 
     def update(self, request, *args, **kwargs):
-        """
-        Update user profile data.
-        """
         partial = kwargs.pop("partial", False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -125,17 +105,10 @@ class UserUpdateView(generics.UpdateAPIView):
 
 
 class ChangePasswordView(APIView):
-    """
-    API view for changing user password.
-    """
-
     permission_classes = [IsAuthenticated]
     serializer_class = ChangePasswordSerializer
 
     def post(self, request):
-        """
-        Change user password.
-        """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -149,17 +122,11 @@ class ChangePasswordView(APIView):
 
 
 class PasswordResetRequestView(APIView):
-    """
-    API view for requesting password reset.
-    """
-
     permission_classes = [AllowAny]
     serializer_class = PasswordResetRequestSerializer
+    throttle_classes = [PasswordResetRateThrottle]
 
     def post(self, request):
-        """
-        Send password reset email to user.
-        """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -173,17 +140,10 @@ class PasswordResetRequestView(APIView):
 
 
 class PasswordResetConfirmView(APIView):
-    """
-    API view for confirming password reset.
-    """
-
     permission_classes = [AllowAny]
     serializer_class = PasswordResetConfirmSerializer
 
     def post(self, request):
-        """
-        Reset user password using token.
-        """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -196,17 +156,10 @@ class PasswordResetConfirmView(APIView):
 
 
 class EmailVerificationView(APIView):
-    """
-    API view for email verification.
-    """
-
     permission_classes = [AllowAny]
     serializer_class = EmailVerificationSerializer
 
     def post(self, request):
-        """
-        Verify user email using token.
-        """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -216,16 +169,9 @@ class EmailVerificationView(APIView):
 
 
 class ResendVerificationEmailView(APIView):
-    """
-    API view for resending verification email.
-    """
-
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        """
-        Resend verification email to user.
-        """
         user = request.user
 
         if user.is_email_verified:
