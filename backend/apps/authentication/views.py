@@ -20,7 +20,7 @@ from .permissions import IsAccountOwner
 
 
 class AuthRateThrottle(AnonRateThrottle):
-    rate = '5/hour'
+    rate = '50/hour'
 
 
 class RegisterRateThrottle(AnonRateThrottle):
