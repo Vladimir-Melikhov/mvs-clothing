@@ -20,7 +20,6 @@
 </template>
 
 <script setup>
-// No script needed for this component
 </script>
 
 <style scoped>
