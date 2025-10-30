@@ -1,9 +1,12 @@
+"""
+Django settings for MVS Clothing project.
+"""
+
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
-import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
@@ -24,9 +27,6 @@ ALLOWED_HOSTS = config(
 FRONTEND_URL = config("FRONTEND_URL", default="http://localhost:5173")
 
 
-# ==============================================================================
-# INSTALLED APPS
-# ==============================================================================
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -161,15 +161,23 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 
+# ==============================================================================
+# DEFAULT PRIMARY KEY FIELD TYPE
+# ==============================================================================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# ==============================================================================
+# DJANGO REST FRAMEWORK
+# ==============================================================================
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.AllowAny",
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ),
     "DEFAULT_PAGINATION_CLASS": "apps.core.pagination.CustomPageNumberPagination",
     "PAGE_SIZE": 20,
@@ -387,13 +395,16 @@ SPECTACULAR_SETTINGS = {
 # ==============================================================================
 
 if not DEBUG:
+    # HTTPS/SSL
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
+    # HSTS
     SECURE_HSTS_SECONDS = 31536000  # 1 year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
+    # Cookies
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Strict"
@@ -401,6 +412,7 @@ if not DEBUG:
     CSRF_COOKIE_HTTPONLY = True
     CSRF_COOKIE_SAMESITE = "Strict"
 
+    # Security Headers
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = "DENY"

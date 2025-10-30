@@ -17,6 +17,7 @@ from .services import ProductService, CategoryService
 from .filters import ProductFilter
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class CategoryListView(generics.ListAPIView):
     """API view for listing categories."""
 
