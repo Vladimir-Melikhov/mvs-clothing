@@ -67,6 +67,13 @@ const router = createRouter({
       name: 'product-detail',
       component: () => import('@/views/products/ProductDetailView.vue'),
     },
+    // Cart route
+    {
+      path: '/cart',
+      name: 'cart',
+      component: () => import('@/views/cart/CartView.vue'),
+      meta: { requiresAuth: true },
+    },
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',

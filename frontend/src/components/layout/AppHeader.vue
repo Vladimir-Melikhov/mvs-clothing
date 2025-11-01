@@ -43,6 +43,16 @@
           <router-link v-if="isAuthenticated" to="/profile" class="nav-link opacity-70 hover:opacity-100 transition-all duration-500">
             PROFILE
           </router-link>
+          <router-link v-if="isAuthenticated" to="/cart" class="nav-link opacity-70 hover:opacity-100 transition-all duration-500 relative">
+            CART
+            <span
+              v-if="cartItemCount > 0"
+              class="absolute -top-2 -right-3 text-[10px] w-4 h-4 rounded-full flex items-center justify-center transition-colors duration-700"
+              :class="isDark ? 'bg-white text-black' : 'bg-black text-white'"
+            >
+              {{ cartItemCount }}
+            </span>
+          </router-link>
         </div>
 
         <!-- Mobile Menu Button -->
@@ -89,10 +99,25 @@
           <router-link
             v-if="isAuthenticated"
             to="/profile"
-            class="block opacity-70 hover:opacity-100 transition-opacity"
+            class="block opacity-70 hover:opacity-100 transition-opacity mb-4"
             @click="mobileMenuOpen = false"
           >
             PROFILE
+          </router-link>
+          <router-link
+            v-if="isAuthenticated"
+            to="/cart"
+            class="block opacity-70 hover:opacity-100 transition-opacity relative inline-block"
+            @click="mobileMenuOpen = false"
+          >
+            CART
+            <span
+              v-if="cartItemCount > 0"
+              class="ml-2 text-[10px] w-4 h-4 rounded-full inline-flex items-center justify-center transition-colors duration-700"
+              :class="isDark ? 'bg-white text-black' : 'bg-black text-white'"
+            >
+              {{ cartItemCount }}
+            </span>
           </router-link>
         </div>
       </div>
@@ -103,6 +128,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useCartStore } from '@/stores/cart'
 
 const props = defineProps({
   variant: {
@@ -113,12 +139,13 @@ const props = defineProps({
 })
 
 const authStore = useAuthStore()
+const cartStore = useCartStore()
 const scrolled = ref(false)
 const mobileMenuOpen = ref(false)
 
 const isAuthenticated = computed(() => authStore.isAuthenticated)
+const cartItemCount = computed(() => cartStore.totalItems)
 
-// УПРОЩЕНО: Вычисляемые свойства для классов
 const isDark = computed(() => props.variant === 'dark' || scrolled.value)
 
 const headerClasses = computed(() =>
@@ -151,6 +178,11 @@ const handleScroll = () => {
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   handleScroll()
+  
+  // Fetch cart if authenticated
+  if (isAuthenticated.value) {
+    cartStore.fetchCart()
+  }
 })
 
 onUnmounted(() => {

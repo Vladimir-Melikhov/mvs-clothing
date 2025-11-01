@@ -1,7 +1,3 @@
-"""
-Django settings for MVS Clothing project.
-"""
-
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
@@ -49,6 +45,7 @@ LOCAL_APPS = [
     "apps.core",
     "apps.authentication",
     "apps.products",
+    "apps.cart",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -365,6 +362,11 @@ LOGGING = {
             "propagate": False,
         },
         "apps.products": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "apps.cart": {
             "handlers": ["console", "file"],
             "level": "INFO",
             "propagate": False,
