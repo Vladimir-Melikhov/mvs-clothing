@@ -45,7 +45,12 @@ class ProductService:
                 queryset = queryset.filter(is_featured=True)
 
             if filters.get("in_stock_only"):
-                queryset = queryset.filter(stock_quantity__gt=0)
+                # Filter products that have variants with stock
+                queryset = queryset.filter(
+                    variants__is_deleted=False,
+                    variants__is_active=True,
+                    variants__stock_quantity__gt=0
+                ).distinct()
 
             if filters.get("brand"):
                 queryset = queryset.filter(brand=filters["brand"])

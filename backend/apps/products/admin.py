@@ -9,6 +9,7 @@ class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
     fields = ["image", "alt_text", "is_primary", "order"]
+    classes = ["collapse"]
 
 
 class ProductVariantInline(admin.TabularInline):
@@ -17,6 +18,7 @@ class ProductVariantInline(admin.TabularInline):
     model = ProductVariant
     extra = 1
     fields = ["size", "color", "color_hex", "sku", "stock_quantity", "price_adjustment", "is_active"]
+    classes = ["collapse"]
 
 
 @admin.register(Category)
@@ -46,30 +48,32 @@ class ProductAdmin(admin.ModelAdmin):
         "category",
         "gender",
         "price_display",
-        "stock_quantity",
+        "total_stock",
         "is_featured",
         "is_active",
         "created_at",
     ]
     list_filter = ["category", "gender", "is_featured", "is_active", "created_at"]
-    search_fields = ["name", "description", "sku"]
+    search_fields = ["name", "description", "sku", "brand"]
     prepopulated_fields = {"slug": ("name",)}
-    readonly_fields = ["views_count", "created_at", "updated_at"]
+    readonly_fields = ["views_count", "total_stock", "created_at", "updated_at"]
     list_editable = ["is_featured", "is_active"]
     inlines = [ProductImageInline, ProductVariantInline]
 
     fieldsets = (
-        (None, {
-            "fields": ("name", "slug", "description", "category", "gender")
+        ("Basic Information", {
+            "fields": ("name", "slug", "description", "category", "gender", "brand")
         }),
         ("Pricing", {
             "fields": ("price", "compare_at_price")
         }),
         ("Inventory", {
-            "fields": ("sku", "stock_quantity")
+            "fields": ("sku", "total_stock"),
+            "description": "Stock is automatically calculated from variants"
         }),
-        ("Product Details", {
-            "fields": ("brand", "care_instructions")
+        ("Additional", {
+            "fields": ("care_instructions",),
+            "classes": ("collapse",)
         }),
         ("Visibility", {
             "fields": ("is_featured", "is_active", "views_count")
@@ -93,6 +97,15 @@ class ProductAdmin(admin.ModelAdmin):
 
     price_display.short_description = "Price"
 
+    def total_stock(self, obj):
+        """Display total stock from variants."""
+        stock = obj.stock_quantity
+        if stock > 0:
+            return format_html('<span style="color: green; font-weight: bold;">{}</span>', stock)
+        return format_html('<span style="color: red;">Out of stock</span>')
+    
+    total_stock.short_description = "Total Stock"
+
 
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
@@ -101,7 +114,7 @@ class ProductImageAdmin(admin.ModelAdmin):
     list_display = ["product", "image_preview", "is_primary", "order", "created_at"]
     list_filter = ["is_primary", "created_at"]
     search_fields = ["product__name", "alt_text"]
-    list_editable = ["order"]
+    list_editable = ["order", "is_primary"]
 
     def image_preview(self, obj):
         """Display image preview in admin."""
@@ -124,8 +137,8 @@ class ProductVariantAdmin(admin.ModelAdmin):
         "size",
         "color_display",
         "sku",
-        "stock_quantity",
-        "final_price",
+        "stock_display",
+        "price_display",
         "is_active",
     ]
     list_filter = ["size", "is_active", "created_at"]
@@ -145,3 +158,29 @@ class ProductVariantAdmin(admin.ModelAdmin):
         return obj.color
 
     color_display.short_description = "Color"
+
+    def stock_display(self, obj):
+        """Display stock with color coding."""
+        if obj.stock_quantity > 10:
+            return format_html('<span style="color: green; font-weight: bold;">{}</span>', obj.stock_quantity)
+        elif obj.stock_quantity > 0:
+            return format_html('<span style="color: orange; font-weight: bold;">{}</span>', obj.stock_quantity)
+        return format_html('<span style="color: red; font-weight: bold;">Out of stock</span>')
+    
+    stock_display.short_description = "Stock"
+
+    def price_display(self, obj):
+        """Display final price."""
+        base = obj.product.price
+        adjustment = obj.price_adjustment
+        final = obj.final_price
+        
+        if adjustment != 0:
+            return format_html(
+                '${} <span style="color: gray;">(${:+.2f})</span>',
+                final,
+                adjustment
+            )
+        return f"${final}"
+    
+    price_display.short_description = "Final Price"

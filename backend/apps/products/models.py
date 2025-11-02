@@ -120,7 +120,7 @@ class Product(BaseModel):
         _("price"),
         max_digits=10,
         decimal_places=2,
-        help_text=_("Product price"),
+        help_text=_("Product base price"),
     )
     compare_at_price = models.DecimalField(
         _("compare at price"),
@@ -156,11 +156,6 @@ class Product(BaseModel):
         _("is active"),
         default=True,
         help_text=_("Whether this product is active and visible"),
-    )
-    stock_quantity = models.IntegerField(
-        _("stock quantity"),
-        default=0,
-        help_text=_("Total available stock quantity"),
     )
     views_count = models.IntegerField(
         _("views count"),
@@ -205,6 +200,14 @@ class Product(BaseModel):
             return 0
         return int(
             ((self.compare_at_price - self.price) / self.compare_at_price) * 100
+        )
+
+    @property
+    def stock_quantity(self):
+        """Get total stock from all variants."""
+        return sum(
+            self.variants.filter(is_deleted=False, is_active=True)
+            .values_list("stock_quantity", flat=True)
         )
 
     @property
@@ -315,7 +318,7 @@ class ProductVariant(BaseModel):
         max_digits=10,
         decimal_places=2,
         default=0,
-        help_text=_("Price adjustment for this variant"),
+        help_text=_("Price adjustment for this variant (can be negative)"),
     )
     is_active = models.BooleanField(
         _("is active"),

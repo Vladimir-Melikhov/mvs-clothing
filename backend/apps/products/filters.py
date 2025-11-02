@@ -22,7 +22,11 @@ class ProductFilter(django_filters.FilterSet):
         fields = ["category", "gender", "brand", "is_featured"]
 
     def filter_in_stock(self, queryset, name, value):
-        """Filter products that are in stock."""
+        """Filter products that are in stock (have variants with stock)."""
         if value:
-            return queryset.filter(stock_quantity__gt=0)
+            return queryset.filter(
+                variants__is_deleted=False,
+                variants__is_active=True,
+                variants__stock_quantity__gt=0
+            ).distinct()
         return queryset

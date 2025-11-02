@@ -98,6 +98,7 @@ class ProductListSerializer(serializers.ModelSerializer):
     is_on_sale = serializers.BooleanField(read_only=True)
     discount_percentage = serializers.IntegerField(read_only=True)
     is_in_stock = serializers.BooleanField(read_only=True)
+    stock_quantity = serializers.IntegerField(read_only=True)  # This is now a property
 
     class Meta:
         model = Product
@@ -114,6 +115,7 @@ class ProductListSerializer(serializers.ModelSerializer):
             "primary_image",
             "is_featured",
             "is_in_stock",
+            "stock_quantity",
             "brand",
         ]
 
@@ -145,6 +147,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     is_on_sale = serializers.BooleanField(read_only=True)
     discount_percentage = serializers.IntegerField(read_only=True)
     is_in_stock = serializers.BooleanField(read_only=True)
+    stock_quantity = serializers.IntegerField(read_only=True)  # This is now a property
     available_sizes = serializers.SerializerMethodField()
     available_colors = serializers.SerializerMethodField()
 
