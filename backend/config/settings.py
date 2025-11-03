@@ -5,11 +5,6 @@ from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-
-# ==============================================================================
-# CORE SETTINGS
-# ==============================================================================
-
 SECRET_KEY = config("SECRET_KEY")
 
 DEBUG = config("DEBUG", default=False, cast=bool)
@@ -46,6 +41,7 @@ LOCAL_APPS = [
     "apps.authentication",
     "apps.products",
     "apps.cart",
+    "apps.orders",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -222,13 +218,12 @@ SIMPLE_JWT = {
 
 
 # ==============================================================================
-# CORS SETTINGS
+# CORS
 # ==============================================================================
 
-# Allow all origins in development (when DEBUG=True)
+
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 
-# Explicitly allowed origins (used when CORS_ALLOW_ALL_ORIGINS=False)
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
@@ -236,10 +231,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
 ]
 
-# Allow cookies to be included in cross-origin HTTP requests
 CORS_ALLOW_CREDENTIALS = True
 
-# Allowed HTTP methods
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
@@ -249,7 +242,6 @@ CORS_ALLOW_METHODS = [
     "PUT",
 ]
 
-# Allowed HTTP headers
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",
@@ -262,7 +254,6 @@ CORS_ALLOW_HEADERS = [
     "x-requested-with",
 ]
 
-# Additional CORS settings for better compatibility
 CORS_PREFLIGHT_MAX_AGE = 86400  # 24 hours
 CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
 
@@ -277,7 +268,7 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = TIME_ZONE
-
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 # ==============================================================================
 # CACHING
@@ -314,7 +305,6 @@ DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="noreply@mvsclothing.c
 # LOGGING
 # ==============================================================================
 
-# Create logs directory if it doesn't exist
 LOGS_DIR = BASE_DIR / "logs"
 LOGS_DIR.mkdir(exist_ok=True)
 

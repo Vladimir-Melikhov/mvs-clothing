@@ -43,6 +43,9 @@
           <router-link v-if="isAuthenticated" to="/profile" class="nav-link opacity-70 hover:opacity-100 transition-all duration-500">
             PROFILE
           </router-link>
+          <router-link v-if="isAuthenticated" to="/orders" class="nav-link opacity-70 hover:opacity-100 transition-all duration-500">
+            ORDERS
+          </router-link>
           <router-link v-if="isAuthenticated" to="/cart" class="nav-link opacity-70 hover:opacity-100 transition-all duration-500 relative">
             CART
             <span
@@ -103,6 +106,14 @@
             @click="mobileMenuOpen = false"
           >
             PROFILE
+          </router-link>
+          <router-link
+            v-if="isAuthenticated"
+            to="/orders"
+            class="block opacity-70 hover:opacity-100 transition-opacity mb-4"
+            @click="mobileMenuOpen = false"
+          >
+            ORDERS
           </router-link>
           <router-link
             v-if="isAuthenticated"
