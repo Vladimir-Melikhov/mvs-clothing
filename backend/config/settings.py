@@ -42,6 +42,7 @@ LOCAL_APPS = [
     "apps.products",
     "apps.cart",
     "apps.orders",
+    "apps.payment",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -302,6 +303,15 @@ DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="noreply@mvsclothing.c
 
 
 # ==============================================================================
+# STRIPE CONFIGURATION
+# ==============================================================================
+
+STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY", default="")
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
+STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="")
+
+
+# ==============================================================================
 # LOGGING
 # ==============================================================================
 
@@ -358,6 +368,16 @@ LOGGING = {
         },
         "apps.cart": {
             "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "apps.orders": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "apps.payment": {
+            "handlers": ["console", "file", "error_file"],
             "level": "INFO",
             "propagate": False,
         },
